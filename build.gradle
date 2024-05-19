@@ -1,0 +1,21 @@
+plugins {
+    id "com.github.node-gradle.node" version "7.0.1"
+}
+
+apply plugin: 'java'
+
+group = 'ru.bobday'
+
+tasks.register('npmBuild', NpmTask) {
+    inputs.dir("src")
+    outputs.dir("dist")
+    args = ['run', 'build']
+}
+
+tasks.register('npmClean', NpmTask) {
+    args = ['run', 'clean']
+}
+
+jar.dependsOn('npmBuild')
+clean.dependsOn('npmClean')
+npmBuild.dependsOn('npmInstall')
